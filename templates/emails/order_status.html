@@ -1,0 +1,35 @@
+{% extends 'emails/base_email.html' %}
+{% block content %}
+{% if order.status == 'preparing' %}
+<h2>Your order is being prepared 👨‍🍳</h2>
+<p>Hi <strong>{{ order.customer_name }}</strong>, our team has started preparing your delicious order!</p>
+{% elif order.status == 'on_the_way' %}
+<h2>Your order is on the way! 🛵</h2>
+<p>Hi <strong>{{ order.customer_name }}</strong>, your order is out for delivery. Get ready!</p>
+{% elif order.status == 'delivered' %}
+<h2>Order Delivered! ✅</h2>
+<p>Hi <strong>{{ order.customer_name }}</strong>, your order has been delivered. We hope you love it!</p>
+{% elif order.status == 'cancelled' %}
+<h2>Order Cancelled ❌</h2>
+<p>Hi <strong>{{ order.customer_name }}</strong>, we're sorry to inform you that your order has been cancelled. Please contact us for more information.</p>
+{% endif %}
+
+<div class="highlight-box">
+  <p>📦 Order <strong>#{{ order.id }}</strong> &nbsp;·&nbsp; <span class="status-badge status-{{ order.status }}">{{ order.get_status_display }}</span></p>
+</div>
+
+<table class="order-table">
+  <thead><tr><th>Item</th><th>Qty</th><th>Subtotal</th></tr></thead>
+  <tbody>
+    {% for item in items %}
+    <tr><td>{{ item.product.name }}</td><td>{{ item.quantity }}</td><td>Rs. {{ item.subtotal }}</td></tr>
+    {% endfor %}
+    <tr class="total-row"><td colspan="2"><strong>Total</strong></td><td><strong>Rs. {{ order.total_amount }}</strong></td></tr>
+  </tbody>
+</table>
+
+{% if order.status == 'delivered' %}
+<p>We'd love to hear your feedback! It only takes 30 seconds.</p>
+<center><a href="http://127.0.0.1:8000/feedback/" class="btn-cta">Leave a Review ⭐</a></center>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'cafe/base.html' %}
+{% block title %}Order Confirmed{% endblock %}
+{% block content %}
+<section class="s-pad">
+  <div class="container-lux">
+    <div class="success-wrap text-center">
+      <div class="success-badge">✓</div>
+      <h2 style="font-size:2.2rem;margin-bottom:.5rem">Order Placed! 🎉</h2>
+      <p class="text-muted mb-4">Your order <strong>#{{ order.id }}</strong> has been received.<br>
+      <small>A confirmation email has been sent to <strong>{{ order.customer_email }}</strong></small></p>
+
+      <div class="detail-grid mb-4">
+        <div class="dg-item"><small>Customer</small><strong>{{ order.customer_name }}</strong></div>
+        <div class="dg-item"><small>Phone</small><strong>{{ order.customer_phone }}</strong></div>
+        <div class="dg-item"><small>Delivery Address</small><strong>{{ order.delivery_address }}</strong></div>
+        <div class="dg-item"><small>Total Amount</small><strong style="color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:1.2rem">Rs. {{ order.total_amount }}</strong></div>
+      </div>
+
+      <div class="lux-card mb-4" style="max-width:500px;margin:0 auto">
+        <div class="lux-card-header"><h5>Order Status</h5></div>
+        <div class="lux-card-body">
+          <div class="track-steps">
+            <div class="ts done"><div class="ts-dot"><i class="bi bi-check"></i></div><small>Placed</small></div>
+            <div class="ts-line {% if order.status == 'preparing' or order.status == 'on_the_way' or order.status == 'delivered' %}done{% endif %}"></div>
+            <div class="ts {% if order.status == 'preparing' or order.status == 'on_the_way' or order.status == 'delivered' %}done{% endif %}">
+              <div class="ts-dot"><i class="bi bi-fire"></i></div><small>Preparing</small>
+            </div>
+            <div class="ts-line {% if order.status == 'on_the_way' or order.status == 'delivered' %}done{% endif %}"></div>
+            <div class="ts {% if order.status == 'on_the_way' or order.status == 'delivered' %}done{% endif %}">
+              <div class="ts-dot"><i class="bi bi-truck"></i></div><small>On the Way</small>
+            </div>
+            <div class="ts-line {% if order.status == 'delivered' %}done{% endif %}"></div>
+            <div class="ts {% if order.status == 'delivered' %}done{% endif %}">
+              <div class="ts-dot"><i class="bi bi-house"></i></div><small>Delivered</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex gap-3 justify-content-center flex-wrap">
+        <a href="{% url 'order_track' order.id %}" class="cta-primary">
+          <span>Track Order</span>
+          <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M9 3l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="{% url 'menu' %}" class="cta-secondary">Order More</a>
+        <a href="{% url 'submit_feedback' %}" class="cta-secondary">Leave Review ⭐</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

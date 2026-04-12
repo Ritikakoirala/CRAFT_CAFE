@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Craft Cafe{% endblock %}</title>
+    {% load static %}
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg sticky-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'home' %}">
+            <div class="brand-logo">
+                <span class="brand-icon">☕</span>
+                <div class="brand-text">
+                    <span class="brand-cc">CC</span>
+                    <span class="brand-name">Craft Cafe</span>
+                </div>
+            </div>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+            <i class="bi bi-list"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav ms-auto align-items-center gap-1">
+                <li class="nav-item"><a class="nav-link" href="{% url 'home' %}"><i class="bi bi-house"></i> Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'menu' %}"><i class="bi bi-grid"></i> Menu</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}"><i class="bi bi-telephone"></i> Contact</a></li>
+                <li class="nav-item">
+                    <a class="nav-link cart-link" href="{% url 'cart' %}">
+                        <i class="bi bi-bag"></i>
+                        <span class="cart-badge" id="cartCount">0</span>
+                    </a>
+                </li>
+                {% if user.is_authenticated %}
+                    {% if user.is_staff %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'admin_dashboard' %}"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+                    {% endif %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> {{ user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li class="nav-item"><a class="nav-link btn-nav" href="{% url 'login' %}">Login</a></li>
+                    <li class="nav-item"><a class="nav-link btn-nav-outline" href="{% url 'register' %}">Register</a></li>
+                {% endif %}
+                <li class="nav-item">
+                    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+                        <i class="bi bi-moon-stars" id="themeIcon"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Messages -->
+{% if messages %}
+<div class="messages-container">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show toast-msg" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Main Content -->
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<!-- Footer -->
+<footer class="site-footer">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="footer-brand">
+                    <span class="brand-icon fs-2">☕</span>
+                    <h4>Craft Cafe</h4>
+                    <p>Your cozy corner for great food, refreshing drinks, and warm vibes. Located in the heart of Kakarvitta.</p>
+                </div>
+            </div>
+            <div class="col-lg-2 col-6">
+                <h6>Quick Links</h6>
+                <ul class="footer-links">
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'menu' %}">Menu</a></li>
+                    <li><a href="{% url 'cart' %}">Cart</a></li>
+                    <li><a href="{% url 'contact' %}">Contact</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-3 col-6">
+                <h6>Hours</h6>
+                <ul class="footer-links">
+                    <li>Mon–Fri: 8am – 9pm</li>
+                    <li>Sat–Sun: 9am – 10pm</li>
+                    <li>Holidays: 10am – 8pm</li>
+                </ul>
+            </div>
+            <div class="col-lg-3">
+                <h6>Contact</h6>
+                <ul class="footer-links">
+                    <li><i class="bi bi-telephone me-2"></i>9824061970</li>
+                    <li><i class="bi bi-envelope me-2"></i>rai.rohan1800@gmail.com</li>
+                    <li><i class="bi bi-geo-alt me-2"></i>Near Newari Khaja Ghar, Kakarvitta</li>
+                </ul>
+            </div>
+        </div>
+        <hr class="footer-divider">
+        <div class="footer-bottom text-center">
+            <p>© 2024 Craft Cafe by Røhån. All rights reserved. | Made By Ritika Koirala(Feel Free to Contract{koirala2061@gmail.com}) 🇳🇵</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Cart JS -->
+<script src="{% static 'js/main.js' %}"></script>
+<!-- Main JS -->
+<script src="{% static 'js/main.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

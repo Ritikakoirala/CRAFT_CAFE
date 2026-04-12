@@ -1,0 +1,39 @@
+{% extends 'cafe/base.html' %}
+{% load static %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<section class="s-pad">
+  <div class="container-lux">
+    <div class="auth-card reveal">
+      <div class="auth-logo-wrap">
+        <img src="{% static 'images/logo.png' %}" alt="Craft Cafe" style="height:70px">
+      </div>
+      <h2 class="auth-h">Create Account</h2>
+      <p class="auth-sub">Join the Craft Cafe family</p>
+      <form method="post" class="auth-form">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="lux-field">
+          <label>{{ field.label }}</label>
+          <input
+            type="{{ field.field.widget.input_type }}"
+            name="{{ field.html_name }}"
+            class="lux-input{% if field.errors %} lux-input--error{% endif %}"
+            {% if field.value %}value="{{ field.value }}"{% endif %}>
+          {% for e in field.errors %}
+          <div class="lux-error">{{ e }}</div>
+          {% endfor %}
+          {% if field.help_text %}
+          <small class="lux-hint">{{ field.help_text }}</small>
+          {% endif %}
+        </div>
+        {% endfor %}
+        <button type="submit" class="cta-primary w-100 d-flex justify-content-center mt-3">
+          <span>Create Account</span>
+        </button>
+      </form>
+      <p class="auth-switch">Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+    </div>
+  </div>
+</section>
+{% endblock %}

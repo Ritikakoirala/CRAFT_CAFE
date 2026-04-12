@@ -1,0 +1,10 @@
+{% extends 'emails/base_email.html' %}
+{% block content %}
+<h2>📩 New Contact Message</h2>
+<p>Someone submitted the contact form on your website.</p>
+<div class="info-row"><span class="info-label">Name</span><span class="info-value">{{ name }}</span></div>
+<div class="info-row"><span class="info-label">Email</span><span class="info-value">{{ email }}</span></div>
+<div class="divider"></div>
+<div class="highlight-box"><p><strong>Message:</strong><br><br>{{ message }}</p></div>
+<p style="font-size:13px;color:#A0917F">Reply directly to this email to respond to {{ name }}.</p>
+{% endblock %}

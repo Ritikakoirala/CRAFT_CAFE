@@ -1,0 +1,120 @@
+{% extends 'admin_panel/base_admin.html' %}
+{% block admin_title %}Dashboard{% endblock %}
+
+{% block admin_content %}
+<!-- Stats Row -->
+<div class="row g-4 mb-4">
+  <div class="col-sm-6 col-xl-3">
+    <div class="stat-card stat-card-orange">
+      <div class="stat-card-icon"><i class="bi bi-bag-check-fill"></i></div>
+      <div class="stat-card-info">
+        <div class="stat-card-num">{{ total_orders }}</div>
+        <div class="stat-card-label">Total Orders</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    <div class="stat-card stat-card-yellow">
+      <div class="stat-card-icon"><i class="bi bi-clock-fill"></i></div>
+      <div class="stat-card-info">
+        <div class="stat-card-num">{{ pending_orders }}</div>
+        <div class="stat-card-label">Pending Orders</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    <div class="stat-card stat-card-green">
+      <div class="stat-card-icon"><i class="bi bi-cup-hot-fill"></i></div>
+      <div class="stat-card-info">
+        <div class="stat-card-num">{{ total_products }}</div>
+        <div class="stat-card-label">Menu Items</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-xl-3">
+    <div class="stat-card stat-card-purple">
+      <div class="stat-card-icon"><i class="bi bi-star-fill"></i></div>
+      <div class="stat-card-info">
+        <div class="stat-card-num">{{ feedbacks|length }}</div>
+        <div class="stat-card-label">New Feedbacks</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row g-3 mb-4">
+  <div class="col-12">
+    <div class="d-flex gap-2 flex-wrap">
+      <a href="{% url 'admin_orders' %}" class="btn btn-accent"><i class="bi bi-list-ul me-2"></i>All Orders</a>
+      <a href="{% url 'admin_products' %}" class="btn btn-outline-secondary"><i class="bi bi-grid me-2"></i>Products</a>
+      <a href="{% url 'admin_product_add' %}" class="btn btn-outline-secondary"><i class="bi bi-plus-lg me-2"></i>Add Product</a>
+      <a href="{% url 'admin_feedback' %}" class="btn btn-outline-secondary"><i class="bi bi-star me-2"></i>Feedback</a>
+    </div>
+  </div>
+</div>
+
+<!-- Recent Orders -->
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="cc-card">
+      <div class="cc-card-header d-flex justify-content-between align-items-center">
+        <h6 class="mb-0"><i class="bi bi-clock-history me-2"></i>Recent Orders</h6>
+        <a href="{% url 'admin_orders' %}" class="btn btn-sm btn-accent">View All</a>
+      </div>
+      <div class="table-responsive">
+        <table class="table cc-table">
+          <thead>
+            <tr>
+              <th>#</th><th>Customer</th><th>Phone</th><th>Total</th><th>Status</th><th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for order in orders %}
+            <tr>
+              <td><strong>#{{ order.id }}</strong></td>
+              <td>{{ order.customer_name }}</td>
+              <td>{{ order.customer_phone }}</td>
+              <td>Rs. {{ order.total_amount }}</td>
+              <td><span class="status-badge status-{{ order.status }}">{{ order.get_status_display }}</span></td>
+              <td>
+                <a href="{% url 'admin_order_detail' order.id %}" class="btn btn-xs btn-outline-secondary">
+                  <i class="bi bi-eye"></i>
+                </a>
+              </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" class="text-center text-muted py-4">No orders yet</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Feedback -->
+  <div class="col-lg-4">
+    <div class="cc-card">
+      <div class="cc-card-header d-flex justify-content-between align-items-center">
+        <h6 class="mb-0"><i class="bi bi-chat-quote me-2"></i>Latest Feedback</h6>
+        <a href="{% url 'admin_feedback' %}" class="btn btn-sm btn-accent">View All</a>
+      </div>
+      <div class="cc-card-body p-0">
+        {% for fb in feedbacks %}
+        <div class="feedback-mini-item">
+          <div class="d-flex justify-content-between align-items-start">
+            <strong class="small">{{ fb.reviewer_name }}</strong>
+            <span class="text-warning small">
+              {% for i in "12345" %}{% if forloop.counter <= fb.rating %}★{% else %}☆{% endif %}{% endfor %}
+            </span>
+          </div>
+          <p class="small text-muted mb-0 mt-1">{{ fb.message|truncatewords:12 }}</p>
+        </div>
+        {% empty %}
+        <div class="text-center text-muted py-4">No feedback yet</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

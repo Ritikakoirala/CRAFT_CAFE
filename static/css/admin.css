@@ -1,0 +1,138 @@
+/* ── Admin Panel Styles ──────────────────────────────────────── */
+.admin-body { overflow-x: hidden; }
+
+.admin-wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.admin-sidebar {
+  width: 240px;
+  min-height: 100vh;
+  background: var(--bg-card);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0;
+  z-index: 200;
+  transition: transform 0.3s, width 0.3s;
+  overflow-y: auto;
+}
+.admin-sidebar.collapsed { transform: translateX(-240px); }
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 1.25rem 1.25rem 1rem;
+  border-bottom: 1px solid var(--border);
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.sidebar-nav {
+  padding: 1rem 0.75rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 10px;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.sidebar-link:hover { background: rgba(212,120,58,0.1); color: var(--accent); }
+.sidebar-link.active { background: rgba(212,120,58,0.15); color: var(--accent); }
+.sidebar-link i { font-size: 1.1rem; min-width: 20px; }
+.sidebar-divider { height: 1px; background: var(--border); margin: 0.5rem 0; }
+
+/* Main area */
+.admin-main {
+  margin-left: 240px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  transition: margin-left 0.3s;
+}
+.admin-main.sidebar-collapsed { margin-left: 0; }
+
+/* Topbar */
+.admin-topbar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.admin-topbar-right { margin-left: auto; display: flex; align-items: center; gap: 0.75rem; }
+.admin-breadcrumb { font-size: 0.88rem; color: var(--text-muted); }
+.admin-breadcrumb strong { color: var(--text-primary); }
+.sidebar-toggle-btn { color: var(--text-muted); border-color: var(--border-light); }
+
+/* Content */
+.admin-content { padding: 1.5rem; flex: 1; }
+
+/* Stat cards */
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  transition: all 0.25s;
+}
+.stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.stat-card-icon {
+  width: 56px; height: 56px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+}
+.stat-card-orange .stat-card-icon { background: rgba(212,120,58,0.15); color: var(--accent); }
+.stat-card-yellow .stat-card-icon { background: rgba(234,179,8,0.15); color: #eab308; }
+.stat-card-green  .stat-card-icon { background: rgba(34,197,94,0.15);  color: #22c55e; }
+.stat-card-purple .stat-card-icon { background: rgba(168,85,247,0.15); color: #a855f7; }
+.stat-card-num  { font-size: 2rem; font-weight: 900; font-family: 'Playfair Display', serif; line-height: 1; }
+.stat-card-label{ font-size: 0.8rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+/* Product admin card */
+.product-admin-card { transition: all 0.25s; }
+.product-admin-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.product-admin-img-wrap { position: relative; height: 160px; background: var(--bg-card2); overflow: hidden; }
+.product-admin-img { width: 100%; height: 100%; object-fit: cover; }
+.product-admin-emoji { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; }
+.product-admin-badges { position: absolute; top: 8px; left: 8px; display: flex; flex-direction: column; gap: 4px; }
+
+/* Feedback mini items */
+.feedback-mini-item {
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+.feedback-mini-item:last-child { border-bottom: none; }
+
+@media (max-width: 768px) {
+  .admin-sidebar { transform: translateX(-240px); }
+  .admin-sidebar.collapsed { transform: translateX(0); }
+  .admin-main { margin-left: 0; }
+  .admin-content { padding: 1rem; }
+}

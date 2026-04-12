@@ -1,0 +1,76 @@
+{% extends 'admin_panel/base_admin.html' %}
+{% block admin_title %}{{ action }} Product{% endblock %}
+
+{% block admin_content %}
+<div class="d-flex gap-2 mb-4">
+  <a href="{% url 'admin_products' %}" class="btn btn-outline-secondary btn-sm">
+    <i class="bi bi-arrow-left me-1"></i>Back to Products
+  </a>
+</div>
+
+<div class="cc-card mx-auto" style="max-width:700px">
+  <div class="cc-card-header">
+    <h6 class="mb-0"><i class="bi bi-box me-2"></i>{{ action }} Product</h6>
+  </div>
+  <div class="cc-card-body">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="row g-3">
+        <div class="col-12">
+          <label class="form-label">Product Name *</label>
+          <input type="text" name="name" class="form-control cc-input" required
+            value="{{ product.name|default:'' }}">
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Category *</label>
+          <select name="category" class="form-select cc-input" required>
+            {% for cat in categories %}
+            <option value="{{ cat.id }}" {% if product.category_id == cat.id %}selected{% endif %}>
+              {{ cat.icon }} {{ cat.name }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Price (Rs.) *</label>
+          <input type="number" name="price" step="0.01" min="0" class="form-control cc-input" required
+            value="{{ product.price|default:'' }}">
+        </div>
+        <div class="col-12">
+          <label class="form-label">Description</label>
+          <textarea name="description" class="form-control cc-input" rows="3">{{ product.description|default:'' }}</textarea>
+        </div>
+        <div class="col-12">
+          <label class="form-label">Product Image</label>
+          {% if product.image %}
+          <div class="mb-2">
+            <img src="{{ product.image.url }}" alt="Current" class="img-thumbnail" style="max-height:100px">
+            <small class="text-muted ms-2">Current image</small>
+          </div>
+          {% endif %}
+          <input type="file" name="image" class="form-control cc-input" accept="image/*">
+        </div>
+        <div class="col-md-6">
+          <div class="form-check form-switch mt-2">
+            <input type="checkbox" name="is_available" class="form-check-input" id="isAvailable"
+              {% if product.is_available or not product %}checked{% endif %}>
+            <label class="form-check-label" for="isAvailable">Available on Menu</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-check form-switch mt-2">
+            <input type="checkbox" name="is_featured" class="form-check-input" id="isFeatured"
+              {% if product.is_featured %}checked{% endif %}>
+            <label class="form-check-label" for="isFeatured">Featured on Homepage</label>
+          </div>
+        </div>
+        <div class="col-12 mt-2">
+          <button type="submit" class="btn btn-accent btn-lg">
+            <i class="bi bi-check-circle me-2"></i>{{ action }} Product
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

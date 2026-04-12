@@ -1,0 +1,29 @@
+{% extends 'emails/base_email.html' %}
+{% block content %}
+<h2>🔔 New Order Received!</h2>
+<p>A new order has been placed on Craft Cafe. Please review and update the status.</p>
+
+<div class="highlight-box">
+  <p><strong>Order #{{ order.id }}</strong> &nbsp;·&nbsp; Rs. {{ order.total_amount }} &nbsp;·&nbsp; {{ order.created_at|date:"M d, Y H:i" }}</p>
+</div>
+
+<div class="info-row"><span class="info-label">Customer</span><span class="info-value">{{ order.customer_name }}</span></div>
+<div class="info-row"><span class="info-label">Phone</span><span class="info-value">{{ order.customer_phone }}</span></div>
+<div class="info-row"><span class="info-label">Email</span><span class="info-value">{{ order.customer_email }}</span></div>
+<div class="info-row"><span class="info-label">Address</span><span class="info-value">{{ order.delivery_address }}</span></div>
+{% if order.notes %}<div class="info-row"><span class="info-label">Notes</span><span class="info-value">{{ order.notes }}</span></div>{% endif %}
+{% if order.payment %}<div class="info-row"><span class="info-label">Payment</span><span class="info-value">{{ order.payment.get_payment_method_display }}</span></div>{% endif %}
+
+<div class="divider"></div>
+<table class="order-table">
+  <thead><tr><th>Item</th><th>Qty</th><th>Price</th><th>Subtotal</th></tr></thead>
+  <tbody>
+    {% for item in items %}
+    <tr><td>{{ item.product.name }}</td><td>{{ item.quantity }}</td><td>Rs. {{ item.price }}</td><td>Rs. {{ item.subtotal }}</td></tr>
+    {% endfor %}
+    <tr class="total-row"><td colspan="3"><strong>Total</strong></td><td><strong>Rs. {{ order.total_amount }}</strong></td></tr>
+  </tbody>
+</table>
+
+<center><a href="http://127.0.0.1:8000/dashboard/orders/{{ order.id }}/" class="btn-cta">Manage Order in Dashboard →</a></center>
+{% endblock %}

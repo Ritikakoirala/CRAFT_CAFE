@@ -1,0 +1,43 @@
+{% extends 'cafe/base.html' %}
+{% block title %}Track Order #{{ order.id }}{% endblock %}
+{% block content %}
+<div class="page-banner page-banner--sm">
+  <div class="container-lux text-center">
+    <h1 class="page-banner-h reveal">Track Order #{{ order.id }}</h1>
+  </div>
+</div>
+<section class="s-pad">
+  <div class="container-lux">
+    <div class="lux-card mx-auto" style="max-width:680px">
+      <div class="lux-card-header d-flex justify-content-between align-items-center">
+        <h5>Order Status</h5>
+        <span class="sbadge sbadge-{{ order.status }}">{{ order.get_status_display }}</span>
+      </div>
+      <div class="lux-card-body">
+        <div class="track-steps mb-4">
+          <div class="ts done"><div class="ts-dot"><i class="bi bi-check"></i></div><small>Placed</small></div>
+          <div class="ts-line {% if order.status == 'preparing' or order.status == 'on_the_way' or order.status == 'delivered' %}done{% endif %}"></div>
+          <div class="ts {% if order.status == 'preparing' or order.status == 'on_the_way' or order.status == 'delivered' %}done{% endif %}"><div class="ts-dot"><i class="bi bi-fire"></i></div><small>Preparing</small></div>
+          <div class="ts-line {% if order.status == 'on_the_way' or order.status == 'delivered' %}done{% endif %}"></div>
+          <div class="ts {% if order.status == 'on_the_way' or order.status == 'delivered' %}done{% endif %}"><div class="ts-dot"><i class="bi bi-truck"></i></div><small>On the Way</small></div>
+          <div class="ts-line {% if order.status == 'delivered' %}done{% endif %}"></div>
+          <div class="ts {% if order.status == 'delivered' %}done{% endif %}"><div class="ts-dot"><i class="bi bi-house"></i></div><small>Delivered</small></div>
+        </div>
+        <div class="sum-divider mb-3"></div>
+        <h6 class="mb-3" style="font-family:'Jost',sans-serif;font-size:.9rem;font-weight:600">Items Ordered</h6>
+        {% for item in order.items.all %}
+        <div class="sum-row"><span>{{ item.product.name }} × {{ item.quantity }}</span><span>Rs. {{ item.subtotal }}</span></div>
+        {% endfor %}
+        <div class="sum-divider"></div>
+        <div class="sum-row sum-total"><strong>Total</strong><strong class="price-accent">Rs. {{ order.total_amount }}</strong></div>
+        {% if order.status == 'delivered' %}
+        <div class="pay-info-box mt-4">
+          <i class="bi bi-emoji-smile me-2" style="color:var(--gold)"></i>Your order was delivered! We'd love your feedback.
+          <a href="{% url 'submit_feedback' %}?order={{ order.id }}" class="cta-primary d-inline-flex mt-2 py-2 px-4" style="font-size:.82rem"><span>Rate Now ⭐</span></a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

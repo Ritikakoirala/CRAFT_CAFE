@@ -1,0 +1,46 @@
+{% extends 'cafe/base.html' %}
+{% block title %}Contact{% endblock %}
+{% block content %}
+<div class="page-banner page-banner--sm">
+  <div class="container-lux text-center">
+    <div class="section-eyebrow light reveal">We'd Love to Hear From You</div>
+    <h1 class="page-banner-h reveal">Get In Touch</h1>
+  </div>
+</div>
+<section class="s-pad">
+  <div class="container-lux">
+    <div class="contact-layout">
+      <div class="contact-info reveal">
+        <h3>Visit & Connect</h3>
+        <div class="ci-item"><div class="ci-icon"><i class="bi bi-person-fill"></i></div><div><small>Owner</small><strong>Røhån</strong></div></div>
+        <div class="ci-item"><div class="ci-icon"><i class="bi bi-geo-alt-fill"></i></div><div><small>Location</small><strong>Near Newari Khaja Ghar, Kathmandu</strong></div></div>
+        <div class="ci-item"><div class="ci-icon"><i class="bi bi-telephone-fill"></i></div><div><small>Phone</small><a href="tel:9824061970"><strong>9824061970</strong></a></div></div>
+        <div class="ci-item"><div class="ci-icon"><i class="bi bi-envelope-fill"></i></div><div><small>Email</small><a href="mailto:rai.rohan1800@gmail.com"><strong>rai.rohan1800@gmail.com</strong></a></div></div>
+        <div class="ci-item"><div class="ci-icon"><i class="bi bi-clock-fill"></i></div><div><small>Hours</small><strong>7:00 AM – 10:00 PM Daily</strong></div></div>
+        <div class="ci-socials mt-4">
+          <a href="#"><i class="bi bi-instagram"></i></a>
+          <a href="#"><i class="bi bi-facebook"></i></a>
+          <a href="#"><i class="bi bi-tiktok"></i></a>
+        </div>
+      </div>
+      <div class="contact-form-wrap reveal">
+        <div class="lux-card">
+          <div class="lux-card-header"><h5><i class="bi bi-chat-dots me-2"></i>Send a Message</h5></div>
+          <div class="lux-card-body">
+            <form method="post" action="{% url 'contact' %}">
+              {% csrf_token %}
+              <div class="lux-field"><label>Your Name</label><input type="text" name="name" class="lux-input" placeholder="Your name" required></div>
+              <div class="lux-field"><label>Email</label><input type="email" name="email" class="lux-input" placeholder="you@email.com" required></div>
+              <div class="lux-field"><label>Message</label><textarea name="message" class="lux-input" rows="5" placeholder="How can we help?" required></textarea></div>
+              <button type="submit" class="cta-primary w-100 d-flex justify-content-center mt-2">
+                <span>Send Message</span>
+                <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M9 3l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

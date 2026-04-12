@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Order #{{ order.id }} - Craft Cafe{% endblock %}
+
+{% block content %}
+<section class="order-status-page py-5">
+    <div class="container">
+        <div class="order-status-card mx-auto" style="max-width: 700px;">
+            <!-- Success Header -->
+            <div class="order-success-header text-center">
+                <div class="success-icon">✅</div>
+                <h2>Order Placed!</h2>
+                <p>Thank you, <strong>{{ order.customer_name }}</strong>! Your order has been received.</p>
+                <div class="order-id-badge">Order #{{ order.id }}</div>
+            </div>
+
+            <!-- Status Tracker -->
+            <div class="status-tracker mt-4">
+                <h6 class="mb-3">Order Status</h6>
+                <div class="tracker-steps">
+                    {% with status=order.status %}
+                    <div class="tracker-step {% if status in 'pending confirmed preparing out_for_delivery delivered' %}done{% endif %}">
+                        <div class="step-dot">📝</div>
+                        <span>Pending</span>
+                    </div>
+                    <div class="tracker-line {% if status in 'confirmed preparing out_for_delivery delivered' %}done{% endif %}"></div>
+                    <div class="tracker-step {% if status in 'confirmed preparing out_for_delivery delivered' %}done{% endif %}">
+                        <div class="step-dot">✅</div>
+                        <span>Confirmed</span>
+                    </div>
+                    <div class="tracker-line {% if status in 'preparing out_for_delivery delivered' %}done{% endif %}"></div>
+                    <div class="tracker-step {% if status in 'preparing out_for_delivery delivered' %}done{% endif %}">
+                        <div class="step-dot">👨‍🍳</div>
+                        <span>Preparing</span>
+                    </div>
+                    <div class="tracker-line {% if status in 'out_for_delivery delivered' %}done{% endif %}"></div>
+                    <div class="tracker-step {% if status in 'out_for_delivery delivered' %}done{% endif %}">
+                        <div class="step-dot">🚴</div>
+                        <span>On the Way</span>
+                    </div>
+                    <div class="tracker-line {% if status == 'delivered' %}done{% endif %}"></div>
+                    <div class="tracker-step {% if status == 'delivered' %}done{% endif %}">
+                        <div class="step-dot">🎉</div>
+                        <span>Delivered</span>
+                    </div>
+                    {% endwith %}
+                </div>
+                <div class="current-status-badge mt-3 text-center">
+                    Current Status: <strong>{{ order.get_status_display }}</strong>
+                </div>
+            </div>
+
+            <!-- Order Details -->
+            <div class="order-details mt-4">
+                <h6>Order Details</h6>
+                <div class="table-responsive">
+                    <table class="table table-borderless">
+                        <tbody>
+                            {% for item in order.items.all %}
+                            <tr>
+                                <td>{{ item.quantity }}× {{ item.product.name }}</td>
+                                <td class="text-end">Rs. {{ item.subtotal }}</td>
+                            </tr>
+                            {% endfor %}
+                            <tr class="total-row">
+                                <td><strong>Total</strong></td>
+                                <td class="text-end"><strong>Rs. {{ order.total_price }}</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Delivery Info -->
+            <div class="delivery-info mt-3">
+                <h6>Delivery Information</h6>
+                <p><i class="bi bi-geo-alt me-2"></i>{{ order.delivery_address }}</p>
+                <p><i class="bi bi-telephone me-2"></i>{{ order.customer_phone }}</p>
+                {% if order.payment %}
+                <p><i class="bi bi-credit-card me-2"></i>Payment: {{ order.payment.get_payment_method_display }}</p>
+                {% endif %}
+            </div>
+
+            <!-- Actions -->
+            <div class="order-actions text-center mt-4">
+                <a href="{% url 'menu' %}" class="btn btn-primary me-2">Order More</a>
+                {% if order.status == 'delivered' %}
+                <a href="{% url 'feedback' %}?order_id={{ order.id }}" class="btn btn-outline-warning">
+                    <i class="bi bi-star me-1"></i>Leave Feedback
+                </a>
+                {% endif %}
+                <a href="{% url 'home' %}" class="btn btn-outline-secondary ms-2">Home</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

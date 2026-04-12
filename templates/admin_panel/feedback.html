@@ -1,0 +1,50 @@
+{% extends 'admin_panel/base_admin.html' %}
+{% block admin_title %}Customer Feedback{% endblock %}
+
+{% block admin_content %}
+<h5 class="mb-4"><i class="bi bi-star me-2"></i>Customer Feedback <span class="badge bg-accent ms-2">{{ feedbacks|length }}</span></h5>
+
+<div class="row g-4">
+  {% for fb in feedbacks %}
+  <div class="col-md-6 col-xl-4">
+    <div class="cc-card h-100">
+      <div class="cc-card-body">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <div class="d-flex align-items-center gap-2">
+            <div class="author-avatar small-avatar">{{ fb.reviewer_name|first|upper }}</div>
+            <div>
+              <strong class="d-block">{{ fb.reviewer_name }}</strong>
+              <small class="text-muted">{{ fb.created_at|date:"M d, Y" }}</small>
+            </div>
+          </div>
+          <div class="text-warning fs-5">
+            {% for i in "12345" %}{% if forloop.counter <= fb.rating %}★{% else %}☆{% endif %}{% endfor %}
+          </div>
+        </div>
+        <p class="text-muted mb-3">"{{ fb.message }}"</p>
+        {% if fb.order %}
+        <small class="text-muted"><i class="bi bi-bag me-1"></i>Order #{{ fb.order.id }}</small>
+        {% endif %}
+        <div class="d-flex gap-2 mt-3">
+          <span class="badge {% if fb.is_approved %}bg-success{% else %}bg-secondary{% endif %}">
+            {% if fb.is_approved %}Approved{% else %}Hidden{% endif %}
+          </span>
+          <form method="post" action="{% url 'admin_feedback_delete' fb.id %}"
+            onsubmit="return confirm('Delete this feedback?')" class="ms-auto">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-xs btn-outline-danger">
+              <i class="bi bi-trash3"></i> Delete
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="col-12 text-center py-5 text-muted">
+    <div class="empty-icon">⭐</div>
+    No feedback yet.
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

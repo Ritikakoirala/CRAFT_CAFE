@@ -1,0 +1,57 @@
+{% extends 'cafe/base.html' %}
+{% block title %}Leave a Review{% endblock %}
+{% block content %}
+<div class="page-banner page-banner--sm">
+  <div class="container-lux text-center">
+    <div class="section-eyebrow light reveal">Share Your Experience</div>
+    <h1 class="page-banner-h reveal">Leave a Review</h1>
+  </div>
+</div>
+<section class="s-pad">
+  <div class="container-lux">
+    <div class="lux-card mx-auto" style="max-width:580px">
+      <div class="lux-card-header text-center"><h5>Rate Your Visit ⭐</h5></div>
+      <div class="lux-card-body">
+        <form method="post" action="{% url 'submit_feedback' %}">
+          {% csrf_token %}
+          {% if request.GET.order %}<input type="hidden" name="order_id" value="{{ request.GET.order }}">{% endif %}
+          <div class="star-rate-wrap text-center mb-4">
+            <p class="mb-2 text-muted">How was your experience?</p>
+            <div class="star-rate" id="starRate">
+              <input type="radio" name="rating" id="s5" value="5"><label for="s5" title="Excellent">★</label>
+              <input type="radio" name="rating" id="s4" value="4"><label for="s4" title="Great">★</label>
+              <input type="radio" name="rating" id="s3" value="3" checked><label for="s3" title="Good">★</label>
+              <input type="radio" name="rating" id="s2" value="2"><label for="s2" title="Fair">★</label>
+              <input type="radio" name="rating" id="s1" value="1"><label for="s1" title="Poor">★</label>
+            </div>
+            <p class="star-word" id="starWord">Good 😊</p>
+          </div>
+          <div class="lux-field">
+            <label>Your Name <small class="text-muted">(optional)</small></label>
+            <input type="text" name="reviewer_name" class="lux-input" placeholder="Anonymous" value="{% if user.is_authenticated %}{{ user.get_full_name|default:user.username }}{% endif %}">
+          </div>
+          <div class="lux-field">
+            <label>Email <small class="text-muted">(for thank-you email, optional)</small></label>
+            <input type="email" name="email" class="lux-input" placeholder="you@email.com">
+          </div>
+          <div class="lux-field">
+            <label>Your Feedback *</label>
+            <textarea name="message" class="lux-input" rows="5" required placeholder="Tell us what you loved or how we can improve..."></textarea>
+          </div>
+          <button type="submit" class="cta-primary w-100 d-flex justify-content-center">
+            <span>Submit Review</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block extra_scripts %}
+<script>
+const words = ['','Poor 😞','Fair 😕','Good 😊','Great 😄','Excellent 🤩'];
+document.querySelectorAll('.star-rate input').forEach(r=>{
+  r.addEventListener('change',()=>{ document.getElementById('starWord').textContent=words[r.value]; });
+});
+</script>
+{% endblock %}

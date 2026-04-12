@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@400;500;600&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#F5EFE6;font-family:'DM Sans',Arial,sans-serif;color:#1A1410}
+  .email-wrapper{max-width:620px;margin:32px auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.08)}
+  .email-header{background:linear-gradient(135deg,#1A0F08 0%,#2D1E12 100%);padding:40px 40px 32px;text-align:center}
+  .email-header img{height:70px;margin-bottom:16px}
+  .email-header h1{font-family:'Playfair Display',serif;color:#fff;font-size:24px;font-weight:700;margin:0}
+  .email-header p{color:rgba(255,255,255,.6);font-size:13px;margin-top:6px}
+  .email-body{padding:40px}
+  .email-body h2{font-family:'Playfair Display',serif;font-size:22px;color:#1A1410;margin-bottom:12px}
+  .email-body p{font-size:15px;color:#5A4A3A;line-height:1.7;margin-bottom:14px}
+  .highlight-box{background:#FAF6F1;border-left:4px solid #D4783A;border-radius:8px;padding:20px 24px;margin:20px 0}
+  .highlight-box p{margin:0;color:#3A2A1A;font-size:14px}
+  .order-table{width:100%;border-collapse:collapse;margin:20px 0;font-size:14px}
+  .order-table th{background:#FAF6F1;padding:10px 14px;text-align:left;font-weight:600;color:#8A6A4A;font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+  .order-table td{padding:12px 14px;border-bottom:1px solid #F0E8DF;color:#3A2A1A}
+  .order-table .total-row td{font-weight:700;color:#D4783A;font-size:16px;border-top:2px solid #D4783A;border-bottom:none}
+  .status-badge{display:inline-block;padding:6px 16px;border-radius:50px;font-size:13px;font-weight:600}
+  .status-pending{background:#FEF9C3;color:#854D0E}
+  .status-preparing{background:#DBEAFE;color:#1E40AF}
+  .status-on_the_way{background:#F3E8FF;color:#6B21A8}
+  .status-delivered{background:#DCFCE7;color:#166534}
+  .status-cancelled{background:#FEE2E2;color:#991B1B}
+  .btn-cta{display:inline-block;background:#D4783A;color:#fff !important;padding:14px 32px;border-radius:10px;font-weight:600;font-size:15px;text-decoration:none;margin:20px 0}
+  .info-row{display:flex;gap:8px;margin-bottom:10px;font-size:14px}
+  .info-label{color:#8A7E72;min-width:100px;font-weight:600}
+  .info-value{color:#1A1410}
+  .email-footer{background:#FAF6F1;padding:28px 40px;text-align:center;border-top:1px solid #EDE0D0}
+  .email-footer p{font-size:12px;color:#A0917F;line-height:1.7;margin:4px 0}
+  .email-footer a{color:#D4783A;text-decoration:none}
+  .divider{height:1px;background:linear-gradient(90deg,transparent,#D4783A,transparent);margin:24px 0;opacity:.3}
+  @media(max-width:600px){.email-body,.email-header,.email-footer{padding:24px 20px}.email-wrapper{margin:0;border-radius:0}}
+</style>
+</head>
+<body>
+<div class="email-wrapper">
+
+  <!-- HEADER -->
+  <div class="email-header">
+    <div style="font-family:'Playfair Display',serif;color:#D4783A;font-size:36px;letter-spacing:2px;margin-bottom:8px">CC</div>
+    <h1>Craft Cafe</h1>
+    <p>Near Newari Khaja Ghar, Kathmandu</p>
+  </div>
+
+  <!-- BODY -->
+  <div class="email-body">
+    {% block content %}{% endblock %}
+  </div>
+
+  <!-- FOOTER -->
+  <div class="email-footer">
+    <p><strong>Craft Cafe</strong> — Near Newari Khaja Ghar, Kathmandu, Nepal</p>
+    <p>📞 <a href="tel:9824061970">9824061970</a> &nbsp;|&nbsp; ✉️ <a href="mailto:rai.rohan1800@gmail.com">rai.rohan1800@gmail.com</a></p>
+    <p style="margin-top:12px;color:#C0B0A0">This is an automated email from Craft Cafe. Please do not reply directly.</p>
+  </div>
+
+</div>
+</body>
+</html>

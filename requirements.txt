@@ -1,0 +1,23 @@
+# Craft Cafe - Production Requirements
+# Core
+Django>=4.2,<5.0
+Pillow>=10.0.0
+python-dotenv>=1.0.0
+
+# Production Server
+gunicorn>=21.0.0
+whitenoise>=6.5.0
+
+# Database
+psycopg2-binary>=2.9.0
+
+# Caching
+django-redis>=0.7.0
+redis>=5.0.0
+
+# Security
+django-cors-headers>=4.0.0
+bleach>=6.0.0
+
+# Monitoring
+sentry-sdk>=1.30.0

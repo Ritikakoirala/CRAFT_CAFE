@@ -1,0 +1,68 @@
+{% extends 'cafe/base.html' %}
+{% load static %}
+{% block title %}Menu{% endblock %}
+{% block content %}
+
+<div class="page-banner">
+  <div class="page-banner-glow"></div>
+  <div class="container-lux">
+    <div class="section-eyebrow light reveal">Full Menu</div>
+    <h1 class="page-banner-h reveal">Crafted With Love</h1>
+    <p class="page-banner-sub reveal">Every item prepared fresh, every single day</p>
+  </div>
+</div>
+
+<section class="s-pad">
+  <div class="container-lux">
+
+    <!-- Filter tabs -->
+    <div class="lux-tabs reveal">
+      <a href="{% url 'menu' %}" class="lux-tab {% if selected_cat == 'all' %}is-active{% endif %}">All Items</a>
+      {% for cat in categories %}
+      <a href="{% url 'menu' %}?category={{ cat.slug }}" class="lux-tab {% if selected_cat == cat.slug %}is-active{% endif %}">
+        {{ cat.icon }} {{ cat.name }}
+      </a>
+      {% endfor %}
+    </div>
+
+    {% if products %}
+    <div class="product-grid product-grid--dense" id="menuGrid">
+      {% for item in products %}
+      <div class="pcard reveal" style="--delay:{{ forloop.counter0 }}0ms">
+        <div class="pcard-img-wrap">
+          {% if item.image %}
+          <img src="{{ item.image.url }}" alt="{{ item.name }}" class="pcard-img" loading="lazy">
+          {% else %}
+          <div class="pcard-emoji-bg">
+            {% if item.category.slug == 'food' %}🍕{% elif item.category.slug == 'drinks' %}🧋{% else %}☕{% endif %}
+          </div>
+          {% endif %}
+          <span class="pcard-cat">{{ item.category.name }}</span>
+          {% with avg=item.average_rating %}{% if avg %}<span class="pcard-rating">★ {{ avg }}</span>{% endif %}{% endwith %}
+        </div>
+        <div class="pcard-body">
+          <h4 class="pcard-name">{{ item.name }}</h4>
+          <p class="pcard-desc">{{ item.description|default:"Freshly prepared with quality ingredients."|truncatewords:12 }}</p>
+          <div class="pcard-foot">
+            <span class="pcard-price">Rs. {{ item.price }}</span>
+            <form method="post" action="{% url 'add_to_cart' item.id %}" class="add-cart-form">
+              {% csrf_token %}
+              <button type="submit" class="btn-add">
+                <i class="bi bi-cart-plus me-1"></i> Add
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <div class="empty-emoji">🍽️</div>
+      <h4>Nothing here yet</h4>
+      <a href="{% url 'menu' %}" class="cta-secondary mt-3">View All Items</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

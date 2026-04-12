@@ -1,0 +1,45 @@
+{% extends 'emails/base_email.html' %}
+{% block content %}
+<h2>Order Confirmed! 🎉</h2>
+<p>Hi <strong>{{ order.customer_name }}</strong>, your order has been received and we're getting it ready for you.</p>
+
+<div class="highlight-box">
+  <p>📦 <strong>Order #{{ order.id }}</strong> &nbsp;·&nbsp; <span class="status-badge status-pending">Pending</span></p>
+</div>
+
+<div class="divider"></div>
+
+<div class="info-row"><span class="info-label">Phone</span><span class="info-value">{{ order.customer_phone }}</span></div>
+<div class="info-row"><span class="info-label">Delivery to</span><span class="info-value">{{ order.delivery_address }}</span></div>
+{% if order.notes %}<div class="info-row"><span class="info-label">Notes</span><span class="info-value">{{ order.notes }}</span></div>{% endif %}
+
+<div class="divider"></div>
+
+<table class="order-table">
+  <thead><tr><th>Item</th><th>Qty</th><th>Price</th><th>Subtotal</th></tr></thead>
+  <tbody>
+    {% for item in items %}
+    <tr>
+      <td>{{ item.product.name }}</td>
+      <td>{{ item.quantity }}</td>
+      <td>Rs. {{ item.price }}</td>
+      <td>Rs. {{ item.subtotal }}</td>
+    </tr>
+    {% endfor %}
+    <tr class="total-row">
+      <td colspan="3"><strong>Total Amount</strong></td>
+      <td><strong>Rs. {{ order.total_amount }}</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+{% if order.payment %}
+<div class="info-row"><span class="info-label">Payment</span><span class="info-value">{{ order.payment.get_payment_method_display }}</span></div>
+{% endif %}
+
+<p>We'll send you an update as soon as your order is being prepared. Estimated delivery: <strong>30–45 minutes</strong>.</p>
+
+<center><a href="http://127.0.0.1:8000/order/track/{{ order.id }}/" class="btn-cta">Track Your Order →</a></center>
+
+<p style="font-size:13px;color:#A0917F">Questions? Call us at <a href="tel:9824061970" style="color:#D4783A">9824061970</a></p>
+{% endblock %}

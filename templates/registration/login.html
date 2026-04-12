@@ -1,0 +1,49 @@
+{% extends 'cafe/base.html' %}
+{% load static %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<section class="s-pad">
+  <div class="container-lux">
+    <div class="auth-card reveal">
+      <div class="auth-logo-wrap">
+        <img src="{% static 'images/logo.png' %}" alt="Craft Cafe" style="height:70px">
+      </div>
+      <h2 class="auth-h">Welcome Back</h2>
+      <p class="auth-sub">Sign in to your Craft Cafe account</p>
+      <form method="post" class="auth-form">
+        {% csrf_token %}
+        <div class="lux-field">
+          <label>Username</label>
+          <input type="text" name="username" class="lux-input" required autofocus>
+        </div>
+        <div class="lux-field">
+          <label>Password</label>
+          <div class="pw-wrap">
+            <input type="password" name="password" id="pwField" class="lux-input" required>
+            <button type="button" class="btn-eye" onclick="togglePw()">
+              <i class="bi bi-eye" id="eyeIco"></i>
+            </button>
+          </div>
+        </div>
+        {% if form.errors %}
+        <div class="lux-error mb-3">Invalid username or password. Please try again.</div>
+        {% endif %}
+        <button type="submit" class="cta-primary w-100 d-flex justify-content-center mt-3">
+          <span>Sign In</span>
+        </button>
+      </form>
+      <p class="auth-switch">No account? <a href="{% url 'register' %}">Register here</a></p>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block extra_scripts %}
+<script>
+function togglePw() {
+  const f = document.getElementById('pwField');
+  const i = document.getElementById('eyeIco');
+  if (f.type === 'password') { f.type = 'text'; i.className = 'bi bi-eye-slash'; }
+  else { f.type = 'password'; i.className = 'bi bi-eye'; }
+}
+</script>
+{% endblock %}

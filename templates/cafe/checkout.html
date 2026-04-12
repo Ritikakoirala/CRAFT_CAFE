@@ -1,0 +1,145 @@
+{% extends 'cafe/base.html' %}
+{% load static %}
+{% block title %}Checkout{% endblock %}
+{% block content %}
+<div class="page-banner page-banner--sm">
+  <div class="container-lux"><h1 class="page-banner-h reveal">Checkout</h1></div>
+</div>
+<section class="s-pad">
+  <div class="container-lux">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="checkout-layout">
+        <div class="checkout-main">
+
+          <!-- Delivery info -->
+          <div class="lux-card mb-4">
+            <div class="lux-card-header"><h5><i class="bi bi-geo-alt me-2"></i>Delivery Details</h5></div>
+            <div class="lux-card-body">
+              <div class="row g-3">
+                <div class="col-12"><div class="lux-field"><label>Full Name *</label><input type="text" name="name" class="lux-input" required {% if user.is_authenticated %}value="{{ user.get_full_name|default:user.username }}"{% endif %}></div></div>
+                <div class="col-md-6"><div class="lux-field"><label>Email *</label><input type="email" name="email" class="lux-input" required {% if user.is_authenticated %}value="{{ user.email }}"{% endif %}></div></div>
+                <div class="col-md-6"><div class="lux-field"><label>Phone *</label><input type="tel" name="phone" class="lux-input" required placeholder="98XXXXXXXX"></div></div>
+                <div class="col-12"><div class="lux-field"><label>Delivery Address *</label><textarea name="address" class="lux-input" rows="3" required placeholder="Street, landmark..."></textarea></div></div>
+                <div class="col-12"><div class="lux-field"><label>Special Notes</label><textarea name="notes" class="lux-input" rows="2" placeholder="Allergies, preferences..."></textarea></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment -->
+          <div class="lux-card">
+            <div class="lux-card-header"><h5><i class="bi bi-credit-card-2-front me-2"></i>Payment Method</h5></div>
+            <div class="lux-card-body">
+              <div class="pay-toggle">
+                <label class="pay-opt is-active" id="lblCod">
+                  <input type="radio" name="payment_method" value="cod" checked>
+                  <div class="pay-opt-inner"><span class="pay-ico">💵</span><div><strong>Cash on Delivery</strong><small>Pay when order arrives</small></div></div>
+                </label>
+                <label class="pay-opt" id="lblQr">
+                  <input type="radio" name="payment_method" value="qr">
+                  <div class="pay-opt-inner"><span class="pay-ico">📱</span><div><strong>QR / eSewa / Khalti</strong><small>Pay digitally now</small></div></div>
+                </label>
+              </div>
+
+              <div id="secCod" class="pay-section">
+                <div class="pay-info-box"><i class="bi bi-info-circle-fill me-2"></i>Pay with cash when our delivery rider arrives. No advance needed.</div>
+              </div>
+
+              <div id="secQr" style="display:none" class="pay-section">
+                <div class="qr-box">
+                  <div class="row g-4 align-items-center">
+                    <div class="col-md-5 text-center">
+                      <div class="qr-img-wrap">
+                        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" width="170" height="170">
+                          <rect width="200" height="200" fill="white" rx="8"/>
+                          <rect x="10" y="10" width="60" height="60" fill="none" stroke="#111" stroke-width="4" rx="4"/>
+                          <rect x="20" y="20" width="40" height="40" fill="#111" rx="2"/>
+                          <rect x="28" y="28" width="24" height="24" fill="white" rx="1"/>
+                          <rect x="34" y="34" width="12" height="12" fill="#111" rx="1"/>
+                          <rect x="130" y="10" width="60" height="60" fill="none" stroke="#111" stroke-width="4" rx="4"/>
+                          <rect x="140" y="20" width="40" height="40" fill="#111" rx="2"/>
+                          <rect x="148" y="28" width="24" height="24" fill="white" rx="1"/>
+                          <rect x="154" y="34" width="12" height="12" fill="#111" rx="1"/>
+                          <rect x="10" y="130" width="60" height="60" fill="none" stroke="#111" stroke-width="4" rx="4"/>
+                          <rect x="20" y="140" width="40" height="40" fill="#111" rx="2"/>
+                          <rect x="28" y="148" width="24" height="24" fill="white" rx="1"/>
+                          <rect x="34" y="154" width="12" height="12" fill="#111" rx="1"/>
+                          <g fill="#111">
+                            <rect x="80" y="10" width="8" height="8"/><rect x="92" y="10" width="8" height="8"/><rect x="104" y="10" width="8" height="8"/><rect x="116" y="10" width="8" height="8"/>
+                            <rect x="80" y="22" width="8" height="8"/><rect x="104" y="22" width="8" height="8"/>
+                            <rect x="80" y="34" width="8" height="8"/><rect x="92" y="34" width="8" height="8"/><rect x="116" y="34" width="8" height="8"/>
+                            <rect x="10" y="80" width="8" height="8"/><rect x="22" y="80" width="8" height="8"/><rect x="46" y="80" width="8" height="8"/>
+                            <rect x="80" y="80" width="8" height="8"/><rect x="104" y="80" width="8" height="8"/><rect x="128" y="80" width="8" height="8"/><rect x="164" y="80" width="8" height="8"/>
+                            <rect x="10" y="92" width="8" height="8"/><rect x="92" y="92" width="8" height="8"/><rect x="116" y="92" width="8" height="8"/>
+                            <rect x="22" y="104" width="8" height="8"/><rect x="80" y="104" width="8" height="8"/><rect x="104" y="104" width="8" height="8"/>
+                            <rect x="10" y="116" width="8" height="8"/><rect x="92" y="116" width="8" height="8"/><rect x="140" y="116" width="8" height="8"/>
+                            <rect x="80" y="128" width="8" height="8"/><rect x="104" y="128" width="8" height="8"/><rect x="128" y="128" width="8" height="8"/>
+                            <rect x="80" y="140" width="8" height="8"/><rect x="116" y="140" width="8" height="8"/><rect x="164" y="140" width="8" height="8"/>
+                            <rect x="80" y="152" width="8" height="8"/><rect x="128" y="152" width="8" height="8"/>
+                            <rect x="80" y="164" width="8" height="8"/><rect x="92" y="164" width="8" height="8"/>
+                            <rect x="80" y="176" width="8" height="8"/><rect x="104" y="176" width="8" height="8"/><rect x="164" y="176" width="8" height="8"/>
+                          </g>
+                          <rect x="86" y="86" width="28" height="28" fill="#D4783A" rx="4"/>
+                          <text x="100" y="105" text-anchor="middle" font-size="13" font-weight="bold" fill="white" font-family="serif">CC</text>
+                        </svg>
+                      </div>
+                      <p class="qr-label">Scan to Pay</p>
+                    </div>
+                    <div class="col-md-7">
+                      <div class="qr-phone-box">
+                        <small>Send payment to</small>
+                        <div class="qr-phone">📱 9824061970</div>
+                        <small>eSewa / Khalti / IME Pay</small>
+                      </div>
+                      <p class="qr-steps mt-3">
+                        <span><i class="bi bi-1-circle-fill"></i> Scan QR or send to number above</span>
+                        <span><i class="bi bi-2-circle-fill"></i> Take a screenshot of payment</span>
+                        <span><i class="bi bi-3-circle-fill"></i> Upload below or enter reference</span>
+                      </p>
+                      <div class="lux-field mt-3"><label>Payment Screenshot <small class="text-muted">(optional)</small></label><input type="file" name="screenshot" class="lux-input" accept="image/*"></div>
+                      <div class="lux-field"><label>Reference / Transaction ID</label><input type="text" name="reference_id" class="lux-input" placeholder="e.g. TXN123456"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Summary sidebar -->
+        <div class="checkout-side">
+          <div class="lux-card order-summary-sticky">
+            <div class="lux-card-header"><h5><i class="bi bi-receipt me-2"></i>Order Summary</h5></div>
+            <div class="lux-card-body">
+              {% for item in cart_items %}
+              <div class="sum-row"><span>{{ item.product.name }} ×{{ item.qty }}</span><span>Rs. {{ item.subtotal }}</span></div>
+              {% endfor %}
+              <div class="sum-divider"></div>
+              <div class="sum-row"><span>Subtotal</span><span>Rs. {{ total }}</span></div>
+              <div class="sum-row text-success"><span><i class="bi bi-truck me-1"></i>Delivery</span><span>Free</span></div>
+              <div class="sum-divider"></div>
+              <div class="sum-row sum-total"><strong>Total</strong><strong class="price-accent">Rs. {{ total }}</strong></div>
+              <div class="delivery-note mt-2"><i class="bi bi-clock me-1"></i>Est. delivery: 30–45 mins</div>
+              <button type="submit" class="cta-primary w-100 d-flex justify-content-center mt-3">
+                <span>Place Order</span>
+                <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M9 3l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <a href="{% url 'cart' %}" class="btn-ghost-block mt-2">← Back to Cart</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}
+{% block extra_scripts %}
+<script>
+const codR=document.querySelector('[value="cod"]'),qrR=document.querySelector('[value="qr"]');
+const lC=document.getElementById('lblCod'),lQ=document.getElementById('lblQr');
+const sC=document.getElementById('secCod'),sQ=document.getElementById('secQr');
+function sync(){const isQr=qrR.checked;lC.classList.toggle('is-active',!isQr);lQ.classList.toggle('is-active',isQr);sC.style.display=isQr?'none':'block';sQ.style.display=isQr?'block':'none';}
+[codR,qrR].forEach(r=>r.addEventListener('change',sync));
+document.querySelectorAll('.pay-opt').forEach(l=>l.addEventListener('click',sync));
+</script>
+{% endblock %}

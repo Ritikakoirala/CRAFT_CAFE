@@ -1,0 +1,259 @@
+{% extends 'cafe/base.html' %}
+{% load static %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero">
+  <div class="hero-bg-wrap">
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-lines"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-label">
+      <span class="label-dot"></span>
+      Kakarvitta's Premier Café Experience
+    </div>
+    <h1 class="hero-headline">
+      Where Every<br>
+      <em>Sip&nbsp;Tells</em><br>
+      a Story
+    </h1>
+    <p class="hero-sub">From hand-crafted bubble teas to wood-fired pizzas elevated comfort food in the heart of Kakarvitta.</p>
+    <div class="hero-ctas">
+      <a href="{% url 'menu' %}" class="cta-primary">
+        <span>Explore Menu</span>
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M9 3l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="{% url 'contact' %}" class="cta-secondary">Find Us</a>
+    </div>
+    <div class="hero-facts">
+      <div class="fact"><strong>25+</strong><span>Menu Items</span></div>
+      <div class="fact-sep"></div>
+      <div class="fact"><strong>500+</strong><span>Happy Guests</span></div>
+      <div class="fact-sep"></div>
+      <div class="fact"><strong>4.8★</strong><span>Avg. Rating</span></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-card-stack">
+      <div class="hc hc-back">
+        <div class="hc-emoji">🧋</div>
+        <div class="hc-text">Bubble Tea</div>
+        <div class="hc-price">Rs. 220</div>
+      </div>
+      <div class="hc hc-mid">
+        <div class="hc-emoji">🥟</div>
+        <div class="hc-text">Jhol Momo</div>
+        <div class="hc-price">Rs. 200</div>
+      </div>
+      <div class="hc hc-front">
+        <div class="hc-emoji">☕</div>
+        <div class="hc-text">Americano</div>
+        <div class="hc-price">Rs. 150</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ═══════════════ MARQUEE BAR ═══════════════ -->
+<div class="marquee-bar">
+  <div class="marquee-track">
+    {% for item in "☕ Americano &nbsp;·&nbsp; 🧋 Bubble Tea &nbsp;·&nbsp; 🥟 Momo &nbsp;·&nbsp; 🍕 Pizza &nbsp;·&nbsp; 🍟 Peri Fries &nbsp;·&nbsp; 🫧 Mojito &nbsp;·&nbsp; 🍫 Hot Chocolate &nbsp;·&nbsp; 🍓 Strawberry Shake &nbsp;·&nbsp;"|make_list %}{% endfor %}
+    ☕ Americano &nbsp;·&nbsp; 🧋 Bubble Tea &nbsp;·&nbsp; 🥟 Momo &nbsp;·&nbsp; 🍕 Pizza &nbsp;·&nbsp; 🍟 Peri Fries &nbsp;·&nbsp; 🫧 Mojito &nbsp;·&nbsp; 🍫 Hot Chocolate &nbsp;·&nbsp; 🍓 Strawberry Shake &nbsp;·&nbsp;
+    ☕ Americano &nbsp;·&nbsp; 🧋 Bubble Tea &nbsp;·&nbsp; 🥟 Momo &nbsp;·&nbsp; 🍕 Pizza &nbsp;·&nbsp; 🍟 Peri Fries &nbsp;·&nbsp; 🫧 Mojito &nbsp;·&nbsp; 🍫 Hot Chocolate &nbsp;·&nbsp; 🍓 Strawberry Shake &nbsp;·&nbsp;
+  </div>
+</div>
+
+<!-- ═══════════════ CATEGORIES ═══════════════ -->
+<section class="s-pad">
+  <div class="container-lux">
+    <div class="section-eyebrow reveal">Browse Collection</div>
+    <h2 class="section-h reveal">Crafted for Every Craving</h2>
+    <div class="cat-grid">
+      <a href="{% url 'menu' %}?category=food" class="cat-tile reveal">
+        <div class="cat-tile-bg"></div>
+        <div class="cat-tile-icon">🍕</div>
+        <div class="cat-tile-label">
+          <strong>Food</strong>
+          <span>Pizza, Momo, Fries & more</span>
+        </div>
+        <div class="cat-tile-arrow"><i class="bi bi-arrow-up-right"></i></div>
+      </a>
+      <a href="{% url 'menu' %}?category=drinks" class="cat-tile reveal">
+        <div class="cat-tile-bg"></div>
+        <div class="cat-tile-icon">🧋</div>
+        <div class="cat-tile-label">
+          <strong>Cold Drinks</strong>
+          <span>Bubble Tea, Shakes & more</span>
+        </div>
+        <div class="cat-tile-arrow"><i class="bi bi-arrow-up-right"></i></div>
+      </a>
+      <a href="{% url 'menu' %}?category=hot-drinks" class="cat-tile reveal">
+        <div class="cat-tile-bg"></div>
+        <div class="cat-tile-icon">☕</div>
+        <div class="cat-tile-label">
+          <strong>Hot Drinks</strong>
+          <span>Chai, Coffee & more</span>
+        </div>
+        <div class="cat-tile-arrow"><i class="bi bi-arrow-up-right"></i></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FEATURED ═══════════════ -->
+{% if featured %}
+<section class="s-pad s-alt">
+  <div class="container-lux">
+    <div class="split-header">
+      <div>
+        <div class="section-eyebrow reveal">Chef's Selection</div>
+        <h2 class="section-h reveal">Featured Dishes</h2>
+      </div>
+      <a href="{% url 'menu' %}" class="link-arrow reveal">View all menu <i class="bi bi-arrow-right ms-1"></i></a>
+    </div>
+    <div class="product-grid">
+      {% for item in featured %}
+      <div class="pcard reveal" style="--delay:{{ forloop.counter0 }}00ms">
+        <div class="pcard-img-wrap">
+          {% if item.image %}
+          <img src="{{ item.image.url }}" alt="{{ item.name }}" class="pcard-img" loading="lazy">
+          {% else %}
+          <div class="pcard-emoji-bg">
+            {% if item.category.slug == 'food' %}🍕{% elif item.category.slug == 'drinks' %}🧋{% else %}☕{% endif %}
+          </div>
+          {% endif %}
+          <span class="pcard-cat">{{ item.category.name }}</span>
+          {% with avg=item.average_rating %}{% if avg %}<span class="pcard-rating">★ {{ avg }}</span>{% endif %}{% endwith %}
+        </div>
+        <div class="pcard-body">
+          <h4 class="pcard-name">{{ item.name }}</h4>
+          <p class="pcard-desc">{{ item.description|default:"Freshly prepared, crafted with care."|truncatewords:10 }}</p>
+          <div class="pcard-foot">
+            <span class="pcard-price">Rs. {{ item.price }}</span>
+            <form method="post" action="{% url 'add_to_cart' item.id %}" class="add-cart-form">
+              {% csrf_token %}
+              <button type="submit" class="btn-add">
+                <i class="bi bi-plus-lg"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ═══════════════ TOP RATED ═══════════════ -->
+{% if top_rated %}
+<section class="s-pad">
+  <div class="container-lux">
+    <div class="section-eyebrow reveal">Guest Favourites</div>
+    <h2 class="section-h reveal">⭐ Top Rated Items</h2>
+    <div class="top-rated-strip">
+      {% for item in top_rated %}
+      <div class="tr-item reveal">
+        <div class="tr-emoji">
+          {% if item.image %}<img src="{{ item.image.url }}" alt="{{ item.name }}" class="tr-img">
+          {% elif item.category.slug == 'food' %}🍕{% elif item.category.slug == 'drinks' %}🧋{% else %}☕{% endif %}
+        </div>
+        <div class="tr-info">
+          <strong>{{ item.name }}</strong>
+          <div class="tr-stars">
+            {% with avg=item.average_rating %}
+            {% if avg %}
+              {% for i in "12345" %}{% if forloop.counter <= avg %}<i class="bi bi-star-fill"></i>{% else %}<i class="bi bi-star"></i>{% endif %}{% endfor %}
+              <small>({{ avg }})</small>
+            {% else %}<small class="text-muted">New</small>{% endif %}
+            {% endwith %}
+          </div>
+          <span class="tr-price">Rs. {{ item.price }}</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ═══════════════ EXPERIENCE STRIP ═══════════════ -->
+<section class="exp-strip">
+  <div class="container-lux">
+    <div class="exp-grid">
+      <div class="exp-item reveal">
+        <div class="exp-icon">🌿</div>
+        <strong>Fresh Daily</strong>
+        <p>Every item prepared fresh each day, no shortcuts</p>
+      </div>
+      <div class="exp-item reveal">
+        <div class="exp-icon">🛵</div>
+        <strong>Fast Delivery</strong>
+        <p>30–45 minute delivery to your door in Kathmandu</p>
+      </div>
+      <div class="exp-item reveal">
+        <div class="exp-icon">💳</div>
+        <strong>Easy Payment</strong>
+        <p>Cash on delivery or QR scan via eSewa / Khalti</p>
+      </div>
+      <div class="exp-item reveal">
+        <div class="exp-icon">💬</div>
+        <strong>Real Reviews</strong>
+        <p>Honest ratings from real guests, every single one</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ TESTIMONIALS ═══════════════ -->
+{% if feedbacks %}
+<section class="s-pad s-alt">
+  <div class="container-lux">
+    <div class="section-eyebrow reveal">Testimonials</div>
+    <h2 class="section-h reveal">What Our Guests Say</h2>
+    <div class="review-grid">
+      {% for fb in feedbacks %}
+      <div class="review-card reveal" style="--delay:{{ forloop.counter0 }}00ms">
+        <div class="review-stars">
+          {% for i in "12345" %}
+          {% if forloop.counter <= fb.rating %}<i class="bi bi-star-fill"></i>{% else %}<i class="bi bi-star"></i>{% endif %}
+          {% endfor %}
+        </div>
+        <p class="review-text">"{{ fb.message }}"</p>
+        <div class="review-author">
+          <div class="review-avatar">{{ fb.reviewer_name|first|upper }}</div>
+          <span>{{ fb.reviewer_name }}</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="text-center mt-5 reveal">
+      <a href="{% url 'submit_feedback' %}" class="cta-secondary">Share Your Experience</a>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ═══════════════ CTA BANNER ═══════════════ -->
+<section class="cta-banner">
+  <div class="cta-banner-glow"></div>
+  <div class="container-lux text-center">
+    <div class="section-eyebrow light reveal">Order Now</div>
+    <h2 class="cta-banner-h reveal">Ready to Indulge?</h2>
+    <p class="cta-banner-sub reveal">Fresh food. Fast delivery. Cash on delivery — no hassle.</p>
+    <a href="{% url 'menu' %}" class="cta-primary cta-primary--light reveal">
+      <span>Start Your Order</span>
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M9 3l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'cafe/base.html' %}
+{% block title %}Cart{% endblock %}
+{% block content %}
+<div class="page-banner page-banner--sm">
+  <div class="container-lux"><h1 class="page-banner-h reveal">Your Cart</h1></div>
+</div>
+<section class="s-pad">
+  <div class="container-lux">
+    {% if cart_items %}
+    <div class="checkout-layout">
+      <div class="checkout-main">
+        <div class="lux-card">
+          <div class="lux-card-header"><h5><i class="bi bi-bag2 me-2"></i>Items ({{ cart_items|length }})</h5></div>
+          {% for item in cart_items %}
+          <div class="cart-row">
+            <div class="cart-row-emoji">{% if item.product.category.slug == 'food' %}🍕{% elif item.product.category.slug == 'drinks' %}🧋{% else %}☕{% endif %}</div>
+            <div class="cart-row-info">
+              <strong>{{ item.product.name }}</strong>
+              <small>{{ item.product.category.name }}</small>
+            </div>
+            <div class="cart-row-price">Rs. {{ item.product.price }}</div>
+            <div class="cart-row-qty">
+              <form method="post" action="{% url 'update_cart' item.product.id %}" class="qty-form">
+                {% csrf_token %}
+                <button type="submit" name="qty" value="{{ item.qty|add:'-1' }}" class="qty-btn">−</button>
+                <span class="qty-num">{{ item.qty }}</span>
+                <button type="submit" name="qty" value="{{ item.qty|add:'1' }}" class="qty-btn">+</button>
+              </form>
+            </div>
+            <div class="cart-row-sub">Rs. {{ item.subtotal }}</div>
+            <form method="post" action="{% url 'remove_from_cart' item.product.id %}">
+              {% csrf_token %}
+              <button type="submit" class="btn-trash"><i class="bi bi-trash3"></i></button>
+            </form>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="checkout-side">
+        <div class="lux-card order-summary-sticky">
+          <div class="lux-card-header"><h5><i class="bi bi-receipt me-2"></i>Summary</h5></div>
+          <div class="lux-card-body">
+            {% for item in cart_items %}
+            <div class="sum-row"><span>{{ item.product.name }} ×{{ item.qty }}</span><span>Rs. {{ item.subtotal }}</span></div>
+            {% endfor %}
+            <div class="sum-divider"></div>
+            <div class="sum-row sum-total"><strong>Total</strong><strong class="price-accent">Rs. {{ total }}</strong></div>
+            <div class="delivery-note"><i class="bi bi-truck me-1"></i>Free delivery in area</div>
+            <a href="{% url 'checkout' %}" class="cta-primary w-100 mt-3 d-flex justify-content-center">
+              <span>Checkout</span>
+              <svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M3 9h12M9 3l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <a href="{% url 'menu' %}" class="btn-ghost-block mt-2">← Continue Shopping</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <div class="empty-emoji">🛒</div>
+      <h4>Your cart is empty</h4>
+      <p>Add something delicious from the menu</p>
+      <a href="{% url 'menu' %}" class="cta-primary mt-3 d-inline-flex align-items-center gap-2">
+        <span>Browse Menu</span>
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

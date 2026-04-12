@@ -1,0 +1,152 @@
+{% extends 'admin_panel/base_admin.html' %}
+{% block admin_title %}Order #{{ order.id }}{% endblock %}
+
+{% block admin_content %}
+<div class="d-flex gap-2 mb-4">
+  <a href="{% url 'admin_orders' %}" class="btn btn-outline-secondary btn-sm">
+    <i class="bi bi-arrow-left me-1"></i>Back to Orders
+  </a>
+</div>
+
+<div class="row g-4">
+  <!-- Order Info -->
+  <div class="col-lg-8">
+    <div class="cc-card mb-4">
+      <div class="cc-card-header">
+        <h6 class="mb-0"><i class="bi bi-bag me-2"></i>Order #{{ order.id }} Details</h6>
+      </div>
+      <div class="cc-card-body">
+        <div class="row g-3 mb-4">
+          <div class="col-sm-6">
+            <label class="small text-muted">Customer Name</label>
+            <div class="fw-bold">{{ order.customer_name }}</div>
+          </div>
+          <div class="col-sm-6">
+            <label class="small text-muted">Phone</label>
+            <div class="fw-bold"><a href="tel:{{ order.customer_phone }}">{{ order.customer_phone }}</a></div>
+          </div>
+          <div class="col-sm-6">
+            <label class="small text-muted">Email</label>
+            <div>{{ order.customer_email }}</div>
+          </div>
+          <div class="col-sm-6">
+            <label class="small text-muted">Order Time</label>
+            <div>{{ order.created_at|date:"M d, Y H:i" }}</div>
+          </div>
+          <div class="col-12">
+            <label class="small text-muted">Delivery Address</label>
+            <div class="fw-bold">{{ order.delivery_address }}</div>
+          </div>
+          {% if order.notes %}
+          <div class="col-12">
+            <label class="small text-muted">Special Notes</label>
+            <div class="fst-italic">{{ order.notes }}</div>
+          </div>
+          {% endif %}
+        </div>
+        <hr class="cc-divider">
+        <h6 class="mb-3">Items Ordered</h6>
+        {% for item in order.items.all %}
+        <div class="summary-row">
+          <span>{{ item.product.name }} × {{ item.quantity }}</span>
+          <span>Rs. {{ item.subtotal }}</span>
+        </div>
+        {% endfor %}
+        <hr class="cc-divider">
+        <div class="summary-row summary-total">
+          <strong>Total Amount</strong>
+          <strong class="total-price">Rs. {{ order.total_amount }}</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment Info -->
+    {% if order.payment %}
+    <div class="cc-card">
+      <div class="cc-card-header">
+        <h6 class="mb-0"><i class="bi bi-credit-card me-2"></i>Payment Details</h6>
+      </div>
+      <div class="cc-card-body">
+        <div class="row g-3">
+          <div class="col-sm-4">
+            <label class="small text-muted">Method</label>
+            <div><span class="badge bg-info">{{ order.payment.get_payment_method_display }}</span></div>
+          </div>
+          <div class="col-sm-4">
+            <label class="small text-muted">Status</label>
+            <div><span class="badge {% if order.payment.payment_status == 'completed' %}bg-success{% elif order.payment.payment_status == 'failed' %}bg-danger{% else %}bg-warning{% endif %}">
+              {{ order.payment.get_payment_status_display }}
+            </span></div>
+          </div>
+          {% if order.payment.reference_id %}
+          <div class="col-sm-4">
+            <label class="small text-muted">Reference ID</label>
+            <div class="fw-bold">{{ order.payment.reference_id }}</div>
+          </div>
+          {% endif %}
+          {% if order.payment.screenshot %}
+          <div class="col-12">
+            <label class="small text-muted">Payment Screenshot</label>
+            <div class="mt-2">
+              <a href="{{ order.payment.screenshot.url }}" target="_blank">
+                <img src="{{ order.payment.screenshot.url }}" alt="Payment proof" class="img-thumbnail" style="max-height:200px">
+              </a>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+        <!-- Update payment status -->
+        <form method="post" class="mt-3 d-flex gap-2 align-items-center">
+          {% csrf_token %}
+          <select name="payment_status" class="form-select cc-input" style="max-width:200px">
+            <option value="pending" {% if order.payment.payment_status == 'pending' %}selected{% endif %}>Pending</option>
+            <option value="completed" {% if order.payment.payment_status == 'completed' %}selected{% endif %}>Completed</option>
+            <option value="failed" {% if order.payment.payment_status == 'failed' %}selected{% endif %}>Failed</option>
+          </select>
+          <button type="submit" class="btn btn-sm btn-accent">Update Payment</button>
+        </form>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Update Status -->
+  <div class="col-lg-4">
+    <div class="cc-card sticky-top" style="top:80px">
+      <div class="cc-card-header">
+        <h6 class="mb-0"><i class="bi bi-arrow-repeat me-2"></i>Update Order Status</h6>
+      </div>
+      <div class="cc-card-body">
+        <div class="mb-3">
+          Current Status: <span class="status-badge status-{{ order.status }}">{{ order.get_status_display }}</span>
+        </div>
+        <form method="post">
+          {% csrf_token %}
+          <div class="d-grid gap-2">
+            <button type="submit" name="status" value="pending"
+              class="btn {% if order.status == 'pending' %}btn-accent{% else %}btn-outline-secondary{% endif %}">
+              🟡 Pending
+            </button>
+            <button type="submit" name="status" value="preparing"
+              class="btn {% if order.status == 'preparing' %}btn-accent{% else %}btn-outline-secondary{% endif %}">
+              🔵 Preparing
+            </button>
+            <button type="submit" name="status" value="on_the_way"
+              class="btn {% if order.status == 'on_the_way' %}btn-accent{% else %}btn-outline-secondary{% endif %}">
+              🚗 On the Way
+            </button>
+            <button type="submit" name="status" value="delivered"
+              class="btn {% if order.status == 'delivered' %}btn-success{% else %}btn-outline-secondary{% endif %}">
+              ✅ Delivered
+            </button>
+            <button type="submit" name="status" value="cancelled"
+              class="btn {% if order.status == 'cancelled' %}btn-danger{% else %}btn-outline-danger{% endif %}">
+              ❌ Cancelled
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

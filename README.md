@@ -4,9 +4,6 @@ A Michelin-level cafe ordering system with real-time emails, luxury UI, and the 
 
 ---
 
-
-
-
 ## 🎨 Design System
 
 **Fonts:** Cormorant Garamond (display) + Jost (body)

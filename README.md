@@ -13,7 +13,6 @@ A Michelin-level cafe ordering system with real-time emails, luxury UI, and the 
 - `#0E0907` — Deep espresso (dark bg)
 - `#F8F2E8` — Warm cream (light bg)
 - `#8A7A68` — Mist (secondary text)
-
 **Features:**
 - ✅ Dark / Light theme toggle (persisted in localStorage)
 - ✅ CSS grain texture overlay for premium feel
